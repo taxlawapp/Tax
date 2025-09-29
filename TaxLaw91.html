@@ -765,12 +765,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const bracketName = ordinals[index] || `رقم ${index + 1}`; // Fallback for more than 8 brackets
                 return `
                 <div class="result-item">
-                    <span>الشريحة ${bracketName} | بمبلغ ${formatCurrency(item.amount)} بسعر ${item.rate}</span> <span>${formatCurrency(item.tax)}</span>
+                    <span>الشريحة ${bracketName} | بمبلغ ${formatCurrency(item.amount)}  | نسبة :  ${item.rate}</span> <span>${formatCurrency(item.tax)}</span>
                 </div>`;
             }).join('');
 
             resultHtml = `
-                <div class="result-header">تفاصيل حساب الضريبة (شخص طبيعي)</div>
+                <div class="result-header">شرائح الضريبة (شخص طبيعي)</div>
                 <div class="result-body">
                     <div class="result-item"><span>الوعاء الضريبي</span> <strong>${formatCurrency(taxableIncome)}</strong></div>
                     <hr style="margin: 15px 0; border-top: 1px solid var(--result-border-light); border-bottom: none;">
@@ -784,7 +784,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else { // Company
             const { totalTax, rate } = calculateCompanyTax(year, income);
             resultHtml = `
-                <div class="result-header">تفاصيل حساب الضريبة (شخص اعتباري)</div>
+                <div class="result-header">شرائح الضريبة (شخص اعتباري)</div>
                     <div class="result-body">
                         <div class="result-item"><span>صافي الربح السنوي</span> <span>${formatCurrency(income)}</span></div>
                         <div class="result-item"><span>السعر الضريبي المطبق</span> <strong>${rate}</strong></div>
