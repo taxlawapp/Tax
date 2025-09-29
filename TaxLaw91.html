@@ -765,7 +765,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const bracketName = ordinals[index] || `رقم ${index + 1}`; // Fallback for more than 8 brackets
                 return `
                 <div class="result-item">
-                    <span>الشريحة ${bracketName} | بمبلغ ${formatCurrency(item.amount)}  | نسبة :  ${item.rate}</span> <span>${formatCurrency(item.tax)}</span>
+                    <span>الشريحة ${bracketName} | بمبلغ ${formatCurrency(item.amount)}  | (  ${item.rate}  )</span> <span>${formatCurrency(item.tax)}</span>
                 </div>`;
             }).join('');
 
