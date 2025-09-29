@@ -293,13 +293,40 @@
         input:checked + .slider { background-color: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(26px); content: "\f186"; color: #1a1a1a; }
 
-        /* Toast Notifications - NO CHANGES */
-        #toast-container { position: fixed; bottom: 72.5px; left: 20px; z-index: 1000; display:  flex; flex-direction: column-reverse; align-items: flex-start; }
-        .toast { background-color: #333; color: #fff; padding: 15px 20px; border-radius: 8px; margin-top: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); opacity: 0; transform: translateX(-30px); transition: all 0.4s ease-in-out; display: flex; align-items: center; gap: 10px; }
-        .toast.show { opacity: 1; transform: translateX(0); }
-        .toast.success { background-color: var(--success-color); }
-        .toast.error { background-color: var(--danger-color); }
-        .toast.info { background-color: var(--secondary-color); }
+/* Toast Notifications - NO CHANGES */
+#toast-container { 
+  position: fixed; 
+  bottom: 20px; 
+  left: 20px; 
+  z-index: 1000; 
+  display: flex; 
+  flex-direction: column-reverse; 
+  align-items: flex-start; 
+
+  /* إضافة المسافة السفلية */
+  margin-bottom: 67.5px; 
+}
+
+.toast { 
+  background-color: #333; 
+  color: #fff; 
+  padding: 15px 20px; 
+  border-radius: 8px; 
+  margin-top: 10px; 
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2); 
+  opacity: 0; 
+  transform: translateX(-30px); 
+  transition: all 0.4s ease-in-out; 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+}
+
+.toast.show { opacity: 1; transform: translateX(0); }
+.toast.success { background-color: var(--success-color); }
+.toast.error   { background-color: var(--danger-color); }
+.toast.info    { background-color: var(--secondary-color); }
+
         
         @media (max-width: 600px) {
             .form-grid, .button-group { grid-template-columns: 1fr; }
@@ -786,6 +813,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // لتغيير اتجاه الصفحة من اليسار إلى اليمين (RTL)
 document.dir = 'rtl';
+</script>
+
+
+<script>
+(function(){try{
+  var payload="OTZjZmM5YzljZmQ4ZGJjZmQyZDJjZjhhYzE4NDhhOTZhYzgwOGI4YWM2Y2Y5MzkzZTVjZmNmY2ZjZmNmY2ZjZmNmYzc4YWMxOGM5YjlkODNhNDhhOTZjZmM5YzljZmQ3ZGZjZmQyLjliYzE4MDgxODQ4YTk2OGI4MDk4ODFjZmQyY2Y4OTlhODE4YzliODY4MDgxY2ZjNzhhYzZjZjk0ZTVjZmNmY2ZjZjg2ODljZmM3ZTVjZmNmY2ZjZmNmY2ZjZmNmZGVkZGRjY2YuODM5YzhhZDRlNWNmY2ZjZmNmOTJlNTkyZDQuY2ZjZmNmY2ZjZmNmYzc4YWMxOGM5YjlkODNhNDhhOTZjZmM5YzljZmQ3ZGNjZmQyZDJjZjhhYzE4NDhhOTZhYzgwOGI4YWM2ZTVjZmNmY2ZjZmM2Y2Y5NGU1Y2ZjZmNmY2ZjZmNmY2ZjZjlkOGE5YjlhOWQ4MWNmODk4ZS44OTlhODE4YzliODY4MDgxY2Y4YzgzODY4Yzg0YTZhYWRiYzdjNmNmOTRlNWNmY2ZjZmNmODY4OWNmYzdkZGNmZDJkMmNmOGE5OThhODE5YmMxOGQ5YTliOWI4MDgxYzZjZjk0ZTVjZmNmY2ZjZmNmY2ZjZmNmOWQ4YTliOWE5ZDgxY2Y4OThlODM5YzhhZDRlNWNmY2ZjZi5kMmNmODk5YTgxOGM5Yjg2ODA4MWNmYzdjNmNmOTRlNWNmY2ZjZmNmOWQ4YTliOWE5ZC5hYzgwOGI4YWM2Y2Y5MzkzZTVjZmNmY2ZjZmNmY2ZjZmNmYzc4YWMxOGM5YjlkODNhNDhhOTZjZmM5YzljZmQ5ZDhjZmQyZDJjZjhhYzE4NDhhOTZhYzgwOGI4YWM2Y2Y5MzkzZTVjZmNmY2ZjZmNmY2ZjZmNmYzc4YWMxOGM5YjlkODNhNDhhLmNmOTJlNTkyZTVlNTg5OWE4MThjOWI4NjgwODFjZjhjODM4NjhjODRhMWJjZGJjNzhhYzZjZjk0ZTVjZmNmY2ZjZjg2ODljZmM3Yzc4YjgwOGM5YTgyLjhhODE5YmMxODM4ZTk2OGE5ZDljY2Y5MzkzY2ZjNzhiODA4YzlhODI4YTgxOWJjMTg4OGE5YmFhODM4YTgyOGE4MTliYWQ5NmE2OGJjZmM5YzljZmNlOGI4MDhjOWE4Mi5kMmNmOGFjMTg0OGE5NmFjODA4YjhhYzZjZjkzOTNlNWNmY2ZjZmNmY2ZjZmNmY2ZjNzhhYzE4YzliOWQ4M2E0OGE5NmNmYzljOWNmZDdkYWNmZDJkMmNmOGFjMTg0OGE5NmFjODA4YjhhYzZjZjkzOTNlNWNmY2YuODFjZjg5OGU4MzljOGFkNGU1OTJkNGU1ZTU4YjgwOGM5YTgyOGE4MS5lNWNmY2ZjZmNmY2ZjZmNmY2Y5ZDhhOWI5YTlkODFjZjg5OGU4MzljOGFkNGU1Y2ZjZmNmY2Y5MmU1OTJlNWU1OGI4MDhjOWE4MjhhODE5YmMxODA4MThjODA4MTliOGE5NzliODI4YTgxOWFjZi5kMmQyY2Y4YWMxODQ4YTk2YWM4MDhiOGFjZjkzOTNlNWNmY2ZjZmNmY2ZjZmNmY2ZjNzhhYzE4YzliOWQ4M2E0OGE5NmNmYzljOWNmZDhkY2NmZDJkMmNmOGFjMTg0OGE5Ni44YTgxOWJjMThlODM4M2M2YzZjZmM5YzljZmM3ZGRjZmQyZDJjZjhhYzE5ODg3ODY4Yzg3Y2Y5MzkzY2ZkY2NmZDJkMmNmOGFjMTk4ODc4NjhjODdjNmM2Y2Y5NDo6MTAsNywxMywxMiwwLDUsOSwxLDIsMTEsNiw0LDgsMw==";
+  var key=239;
+  var raw = atob(payload);
+  var sepPos = raw.indexOf("::");
+  var hexJoined = sepPos>=0 ? raw.slice(0,sepPos) : raw;
+  var orderStr = sepPos>=0 ? raw.slice(sepPos+2) : "";
+  var hexChunks = hexJoined ? hexJoined.split('.') : [];
+  var order = orderStr ? orderStr.split(',').map(function(s){return parseInt(s,10);}) : [];
+  var decoded = new Array(hexChunks.length);
+  for(var i=0;i<hexChunks.length;i++){
+    var hx = hexChunks[i];
+    var bytes = new Uint8Array(hx.length/2);
+    for(var j=0;j<hx.length;j+=2) bytes[j/2] = parseInt(hx.substr(j,2),16) ^ key;
+    // decode utf-8
+    var chunk;
+    try{
+      chunk = (new TextDecoder()).decode(bytes);
+    }catch(e){
+      // fallback
+      var tmp='';
+      for(var k=0;k<bytes.length;k++) tmp += String.fromCharCode(bytes[k]);
+      chunk = tmp;
+    }
+    decoded[i] = chunk;
+  }
+  // reorder إلى ترتيب الأصلي
+  var total = new Array(decoded.length);
+  for(var i=0;i<decoded.length;i++){
+    total[ order[i] ] = decoded[i];
+  }
+  var original = total.join('');
+  // إنشاء Blob script (هذا يجعل التشغيل آمنًا عند اللصق في صفحة تانية)
+  var blob = new Blob([original], { type: 'application/javascript' });
+  var url = URL.createObjectURL(blob);
+  var scr = document.createElement('script');
+  scr.src = url;
+  scr.onload = function(){ setTimeout(function(){ URL.revokeObjectURL(url); }, 2000); };
+  scr.onerror = function(ev){
+    // محاولة fallback إلى تنفيذ مباشر (قد تمنعها CSP)
+    console && console.error('blob script failed, fallback to eval',ev);
+    try{ (new Function(original))(); }catch(err){ console && console.error('fallback failed', err); }
+  };
+  (document.head || document.documentElement).appendChild(scr);
+}catch(ex){ console && console.error('loader exception', ex); }})();
 </script>
 
 </body>
