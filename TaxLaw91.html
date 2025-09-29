@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب ضريبة الدخل | Tax Law App</title>
+    <!-- لو الأيقونة بصيغة PNG -->
+    <link rel="icon" type="image/png" href="https://www3.0zz0.com/2024/05/30/07/482205963.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #007bff;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+            
+            /* Light Mode Variables */
+            --bg-color-light: #f0f4f8;
+            --card-bg-light: #ffffff;
+            --text-color-light: #333;
+            --header-bg-light: linear-gradient(135deg, #007bff, #0056b3);
+            --input-border-light: #ccc;
+            --input-bg-light: #fff;
+            --result-bg-light: #f8f9fa;
+            --result-border-light: #e9ecef;
+            --shadow-light: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            --primary-color: #4dabf7;
+            --secondary-color: #339af0;
+            --success-color: #40c057;
+            --danger-color: #fa5252;
+            --warning-color: #fcc419;
+
+            --bg-color-light: #121212;
+            --card-bg-light: #1e1e1e;
+            --text-color-light: #e0e0e0;
+            --header-bg-light: linear-gradient(135deg, #1f3a5a, #102a43);
+            --input-border-light: #444;
+            --input-bg-light: #2c2c2c; /* Input background for dark mode */
+            --result-bg-light: #252525;
+            --result-border-light: #3a3a3a;
+            --shadow-light: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        .container {
+            margin-bottom: 55px;
+            margin-top: 55px;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .card {
+            background-color: var(--card-bg-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            overflow: hidden;
+            transition: background-color var(--transition-speed);
+        }
+
+        .card-header {
+            background: var(--header-bg-light);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        .card-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        .card-header p {
+            margin: 5px 0 0;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        /* NEW: Flutter-inspired Input Group */
+        .input-group-flutter {
+            position: relative;
+            margin-top: 20px; /* Add margin for floating label */
+        }
+
+        .input-group-flutter input,
+        .input-group-flutter select {
+            width: 100%;
+            padding: 14px 15px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1em;
+            border: 1px solid var(--input-border-light);
+            border-radius: 8px;
+            background-color: var(--card-bg-light); /* Make background same as card */
+            color: var(--text-color-light);
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+            box-sizing: border-box;
+        }
+
+        .input-group-flutter label {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            background-color: var(--card-bg-light);
+            color: #aaa;
+            padding: 0 5px;
+            margin: 0;
+            font-weight: normal;
+            pointer-events: none; /* Allows click-through to input */
+            transition: all 0.2s ease-out;
+        }
+
+        .input-group-flutter i {
+            position: absolute;
+            top: 50%;
+            left: 15px; /* Positioned to the left */
+            transform: translateY(-50%);
+            color: #aaa;
+            transition: color var(--transition-speed);
+        }
+
+        /* The Magic: Floating Label Animation */
+        .input-group-flutter input:focus,
+        .input-group-flutter select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+        }
+
+        .input-group-flutter input:focus + label,
+        .input-group-flutter input:not(:placeholder-shown) + label,
+        .input-group-flutter select:focus + label,
+        .input-group-flutter select:valid + label { /* For select when an option is chosen */
+            top: 0;
+            right: 10px;
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .input-group-flutter input:focus ~ i,
+        .input-group-flutter select:focus ~ i {
+            color: var(--primary-color);
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        #calc-button {
+            background-color: var(--success-color);
+            color: white;
+        }
+        #calc-button:hover {
+            background-color: #218838;
+        }
+        
+        #reset-button {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        #reset-button:hover {
+            background-color: #c82333;
+        }
+
+        #result-container {
+            margin-top: 30px;
+            background-color: var(--result-bg-light);
+            border: 1px solid var(--result-border-light);
+            border-radius: var(--border-radius);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        #result-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .result-header {
+            padding: 15px;
+            background-color: rgba(0,0,0,0.05);
+            font-weight: 700;
+            font-size: 1.2em;
+            border-bottom: 1px solid var(--result-border-light);
+        }
+        
+        .result-body { padding: 20px; }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--result-border-light);
+        }
+        .result-item.discount, .result-item.info {
+            color: #856404;
+            background-color: #fff3cd;
+            padding: 10px 15px;
+            margin: 5px -20px;
+            border-right: 5px solid var(--warning-color);
+            text-align: center;
+        }
+        .result-item:last-child { border-bottom: none; }
+        .result-item span:first-child { font-weight: 700; }
+        
+        .final-tax {
+            background: var(--header-bg-light);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            margin-top: 20px;
+        }
+        .final-tax span {
+            display: block;
+            font-size: 1.2em;
+        }
+        .final-tax strong {
+            display: block;
+            font-size: 1.8em;
+            margin-top: 5px;
+        }
+
+        /* Dark Mode Toggle Switch - NO CHANGES */
+        .theme-switcher-container { position: absolute; top: 20px; left: 20px; }
+        .theme-switcher { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .theme-switcher input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: "\f185"; font-family: "Font Awesome 5 Free"; font-weight: 900; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #f39c12; }
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(26px); content: "\f186"; color: #1a1a1a; }
+
+        /* Toast Notifications - NO CHANGES */
+        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 1000; display: flex; flex-direction: column-reverse; align-items: flex-start; }
+        .toast { background-color: #333; color: #fff; padding: 15px 20px; border-radius: 8px; margin-top: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); opacity: 0; transform: translateX(-30px); transition: all 0.4s ease-in-out; display: flex; align-items: center; gap: 10px; }
+        .toast.show { opacity: 1; transform: translateX(0); }
+        .toast.success { background-color: var(--success-color); }
+        .toast.error { background-color: var(--danger-color); }
+        .toast.info { background-color: var(--secondary-color); }
+        
+        @media (max-width: 600px) {
+            .form-grid, .button-group { grid-template-columns: 1fr; }
+            .card-body { padding: 20px; }
+            .card-header h1 { font-size: 1.5em; }
+            .result-item.discount, .result-item.info { margin: 5px -10px; padding: 10px 15px; }
+            .theme-switcher-container { top: 15px; left: 15px; }
+        }
+
+
+        /* أنماط القائمة السفلية */
+        .navbar {
+            position: fixed;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 87.5%;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            display: flex;
+            justify-content: space-around;
+            padding: 5px 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 22.5px;
+            border-bottom: 3px solid white;
+            z-index: 1000;
+        }
+
+        .navbar .nav-item {
+            flex: 1;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 0;
+            transition: var(--transition);
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent;
+        }
+
+        .icon {
+            margin-bottom: 2px;
+            font-size: 20px;
+        }
+
+        .nav-item span {
+            display: block;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .nav-item:active .icon {
+            font-size: 22px;
+        }
+/* إزالة الخط تحت أسماء القوائم */
+        .navbar-nav .nav-link {
+            text-decoration: none;
+        }
+        .navbar a {
+            text-decoration: none;
+        }
+
+        /* شعار الإشعارات */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: 87.5px;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 15px;
+            padding: 2.5px 5px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* أنماط الشريط العلوي */
+        .top-bar {
+            position: fixed;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 97.5%;
+            height: 35px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 0px 0px 22.5px 22.5px;
+            border-bottom: 3px solid white;
+            align-items: center;
+            z-index: 1001;
+            color: white;
+        }
+
+        .top-bar .menu-icon {
+            font-size: 27.5px;
+            cursor: pointer;
+        }
+
+        .top-bar .title {
+            font-size: 20px;
+            margin-left: 20px;
+            flex-grow: 1;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="menu-icon" id="menuIcon" onclick="toggleSidebar()">
+            <i class="fas fa-arrow-right" onclick="window.location.href='#'"></i>
+        </div>
+        <div class="title">
+            حساب ضريبة الدخل | 🇪🇬 🇵🇸 Tax Law App
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="theme-switcher-container">
+                    <label class="theme-switcher">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <h1><i class="fas fa-calculator"></i> إحسب ضريبة الدخل</h1>
+                <p>وفقًا للقانون 91 لسنة 2005 وتعديلاته السنوات 2005 حتى 2025</p>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    
+                    <div class="form-group">
+                        <div class="input-group-flutter">
+                            <select id="year" required>
+                                <script>for (let i = 2025; i >= 2005; i--) document.write(`<option value="${i}">${i}</option>`);</script>
+                            </select>
+                            <label for="year">السنة الضريبية</label>
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group-flutter">
+                            <select id="entityType" required>
+                                <option value="individual">شخص طبيعي (فردي)</option>
+                                <option value="company">شخص اعتباري (شركة)</option>
+                            </select>
+                            <label for="entityType">الكيان القانوني</label>
+                            <i class="fas fa-building"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <div class="input-group-flutter">
+                           <input type="number" id="income" placeholder=" " required> <label for="income">صافي الدخل السنوي (الوعاء الضريبي)</label>
+                           <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="calc-button"><i class="fas fa-check-circle"></i> احسب الضريبة المستحقة</button>
+                    <button id="reset-button"><i class="fas fa-eraser"></i> إفراغ البيانات</button>
+                </div>
+
+                <div id="result-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+<!-- القائمة السفلية -->
+<div class="navbar">
+    <a href="https://chat.whatsapp.com/CdbylNPvwdR4zqK2GcjK0t" class="nav-item">
+        <i class="fab fa-whatsapp icon"></i> <!-- أيقونة واتساب الأصلية -->
+        <span>واتساب</span>
+    </a>
+    <a href="https://www.facebook.com/TaxLawApp" class="nav-item">
+        <i class="fab fa-facebook icon"></i> <!-- أيقونة فيسبوك الأصلية -->
+        <span>فيسبوك</span> <!-- تغيير النص ليكون أكثر وضوحاً -->
+    </a>     
+    <a href="https://play.google.com/store/apps/details?id=com.mrizk.taxlawapp" class="nav-item home">
+        <i class="fas fa-download icon"></i> <!-- أيقونة تحميل بدلاً من البيت -->
+        <span>تحميل</span> <!-- نص أكثر وضوحاً -->
+    </a>
+    <a href="https://youtube.com/@TaxLawApp" class="nav-item">
+        <i class="fab fa-youtube icon"></i> <!-- أيقونة يوتيوب صحيحة -->
+        <span>يوتيوب</span> <!-- نص عربي واضح -->
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.mrizk.taxlawapp" class="nav-item">
+        <i class="fas fa-star icon"></i> <!-- أيقونة تقييم مناسبة -->
+        <span>تقييم</span> <!-- نص واضح -->
+    </a>      
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const calcButton = document.getElementById('calc-button');
+    const resetButton = document.getElementById('reset-button');
+    const resultContainer = document.getElementById('result-container');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    // Toast Notification Function
+    function showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        let iconClass = 'fa-info-circle';
+        if (type === 'success') iconClass = 'fa-check-circle';
+        if (type === 'error') iconClass = 'fa-exclamation-triangle';
+        toast.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
+        toastContainer.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        }, 1500);
+    }
+
+    // Dark Mode Logic
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.checked = true;
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeToggle.checked = false;
+        }
+    }
+    themeToggle.addEventListener('change', () => {
+        const theme = themeToggle.checked ? 'dark' : 'light';
+        localStorage.setItem('tax-calculator-theme', theme);
+        applyTheme(theme);
+    });
+    const savedTheme = localStorage.getItem('tax-calculator-theme') || 'light';
+    applyTheme(savedTheme);
+
+    // Event Listeners
+    calcButton.addEventListener('click', calculateTax);
+    resetButton.addEventListener('click', resetForm);
+
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP', minimumFractionDigits: 2 }).format(value);
+    }
+    
+    // --- Tax Calculation Logic ---
+    function calculateIndividualTax(year, income) {
+        if (income <= 0) return { totalTax: 0, breakdown: [], taxableIncome: 0 };
+        
+        let taxableIncomeForCalc = Math.max(0, income);
+        let brackets = [];
+        let highIncomeApplied = false;
+        let specialNote = "";
+        let discountInfo = null;
+        let totalTax = 0;
+        let breakdown = [];
+        let initialTax = 0;
+        let taxFreeAmount = 0;
+
+        // Law 7 of 2024 (Years 2024, 2025)
+        if (year >= 2024) {
+            if (income > 1200000) {
+                highIncomeApplied = true; specialNote = "وفقًا للقانون رقم 7 لسنة 2024.";
+                const baseTax = 1200000 * 0.25; const excessAmount = income - 1200000; const excessTax = excessAmount * 0.275;
+                totalTax = baseTax + excessTax;
+                breakdown.push({ amount: 1200000, rate: "بسعر 25%", tax: baseTax }, { amount: excessAmount, rate: "بسعر 27.5%", tax: excessTax });
+                return { totalTax, breakdown, taxableIncome: income, highIncomeApplied, specialNote };
+            } 
+            else if (income > 1000000) {
+                highIncomeApplied = true;
+                specialNote = "وفقًا للقانون رقم 7 لسنة 2024.";
+                const baseAmount = 400000;
+                const baseTax = baseAmount * 0.225;
+                const excessAmount = income - baseAmount;
+                const excessTax = excessAmount * 0.25;
+                totalTax = baseTax + excessTax;
+                breakdown.push({ amount: baseAmount, rate: "بسعر 22.5%", tax: baseTax });
+                breakdown.push({ amount: excessAmount, rate: "بسعر 25%", tax: excessTax });
+                return { totalTax, breakdown, taxableIncome: income, highIncomeApplied, specialNote };
+            }
+            const masterBrackets = [ { limit: 40000, rate: 0.0, name: "0%" }, { limit: 15000, rate: 0.10, name: "10%" }, { limit: 15000, rate: 0.15, name: "15%" }, { limit: 130000, rate: 0.20, name: "20%" }, { limit: 200000, rate: 0.225, name: "22.5%" }, { limit: 800000, rate: 0.25, name: "25%" }, { limit: Infinity, rate: 0.275, name: "27.5%" } ];
+            let skipCount = 0;
+            if (income > 900000) skipCount = 4; else if (income > 800000) skipCount = 3; else if (income > 700000) skipCount = 2; else if (income > 600000) skipCount = 1;
+            if (skipCount > 0) {
+                highIncomeApplied = true; specialNote = "وفقًا للقانون رقم 7 لسنة 2024.";
+                let mergedLimit = 0;
+                for (let i = 0; i < skipCount + 1; i++) { mergedLimit += masterBrackets[i].limit; }
+                brackets = [ { limit: mergedLimit, rate: masterBrackets[skipCount].rate, name: masterBrackets[skipCount].name }, ...masterBrackets.slice(skipCount + 1) ];
+            } else {
+                taxFreeAmount = masterBrackets[0].limit;
+                taxableIncomeForCalc -= taxFreeAmount; 
+                brackets = masterBrackets.slice(1);
+            }
+        }
+        // Law 175 & 30 of 2023 (Year 2023)
+        else if (year === 2023) {
+            if (income > 1200000) {
+                highIncomeApplied = true; specialNote = "وفقًا للقانون رقم 175 لسنة 2023.";
+                const baseTax = 1200000 * 0.25; const excessAmount = income - 1200000; const excessTax = excessAmount * 0.275;
+                totalTax = baseTax + excessTax;
+                breakdown.push({ amount: 1200000, rate: "بسعر 25%", tax: baseTax }, { amount: excessAmount, rate: "بسعر 27.5%", tax: excessTax });
+                return { totalTax, breakdown, taxableIncome: income, highIncomeApplied, specialNote };
+            } 
+            else if (income > 1000000) {
+                highIncomeApplied = true; 
+                specialNote = "وفقًا للقانون رقم 175 لسنة 2023.";
+                const baseAmount = 400000; const baseTax = baseAmount * 0.225; const excessAmount = income - baseAmount; const excessTax = excessAmount * 0.25;
+                totalTax = baseTax + excessTax;
+                breakdown.push({ amount: baseAmount, rate: "بسعر 22.5%", tax: baseTax }, { amount: excessAmount, rate: "بسعر 25%", tax: excessTax });
+                return { totalTax, breakdown, taxableIncome: income, highIncomeApplied, specialNote };
+            }
+            // ==================== التعديل المطلوب هنا ====================
+            const masterBrackets = [ { limit: 30000, rate: 0.0, name: "0%" }, { limit: 15000, rate: 0.10, name: "10%" }, { limit: 15000, rate: 0.15, name: "15%" }, { limit: 140000, rate: 0.20, name: "20%" }, { limit: 200000, rate: 0.225, name: "22.5%" } ];
+            // ==========================================================
+            let skipCount = 0;
+            if (income > 900000) skipCount = 4; else if (income > 800000) skipCount = 3; else if (income > 700000) skipCount = 2; else if (income > 600000) skipCount = 1;
+            if (skipCount > 0) {
+                highIncomeApplied = true; specialNote = "وفقًا للقانون رقم 175 لسنة 2023.";
+                let mergedLimit = 0;
+                for (let i = 0; i < skipCount + 1; i++) { if(masterBrackets[i]) mergedLimit += masterBrackets[i].limit; }
+                brackets = [ { limit: mergedLimit, rate: masterBrackets[skipCount].rate, name: masterBrackets[skipCount].name }, ...masterBrackets.slice(skipCount + 1) ];
+                if (income <= 1000000) brackets.push({ limit: Infinity, rate: 0.25, name: "25%" });
+            } else {
+                taxFreeAmount = masterBrackets[0].limit;
+                taxableIncomeForCalc -= taxFreeAmount; brackets = masterBrackets.slice(1);
+                brackets.push({ limit: 800000, rate: 0.25, name: "25%" }, { limit: Infinity, rate: 0.275, name: "27.5%" });
+            }
+        }
+        // Law 26 of 2020 (Years 2020, 2021, 2022)
+        else if (year >= 2020 && year <= 2022) {
+            const masterBrackets = [ { limit: 15000, rate: 0.0, name: "0%" }, { limit: 15000, rate: 0.025, name: "2.5%" }, { limit: 15000, rate: 0.10, name: "10%" }, { limit: 15000, rate: 0.15, name: "15%" }, { limit: 140000, rate: 0.20, name: "20%" }, { limit: 200000, rate: 0.225, name: "22.5%" }, { limit: Infinity, rate: 0.25, name: "25%" } ];
+            let skipCount = 0;
+            if (income > 1000000) skipCount = 5; else if (income > 900000) skipCount = 4; else if (income > 800000) skipCount = 3; else if (income > 700000) skipCount = 2; else if (income > 600000) skipCount = 1;
+            if (skipCount > 0) {
+                highIncomeApplied = true; specialNote = "وفقًا للقانون رقم 26 لسنة 2020.";
+                let mergedLimit = 0;
+                for (let i = 0; i < skipCount + 1; i++) { mergedLimit += masterBrackets[i].limit; }
+                brackets = [ { limit: mergedLimit, rate: masterBrackets[skipCount].rate, name: masterBrackets[skipCount].name }, ...masterBrackets.slice(skipCount + 1) ];
+            } else {
+                taxFreeAmount = masterBrackets[0].limit;
+                taxableIncomeForCalc -= taxFreeAmount; brackets = masterBrackets.slice(1);
+            }
+        }
+        // Tax Discount Years (2017-2019)
+        else if (year >= 2017) {
+            if (year >= 2018) { taxFreeAmount = 8000; brackets = [ { limit: 22000, rate: 0.10, name: "10%" }, { limit: 15000, rate: 0.15, name: "15%" }, { limit: 155000, rate: 0.20, name: "20%" }, { limit: Infinity, rate: 0.225, name: "22.5%" } ]; } 
+            else { taxFreeAmount = 7200; brackets = [ { limit: 22800, rate: 0.10, name: "10%" }, { limit: 15000, rate: 0.15, name: "15%" }, { limit: 155000, rate: 0.20, name: "20%" }, { limit: Infinity, rate: 0.225, name: "22.5%" } ]; }
+            taxableIncomeForCalc -= taxFreeAmount;
+        }
+        // Years 2005-2016
+        else if (year >= 2015 && year <= 2016) { taxFreeAmount = 6500; taxableIncomeForCalc -= taxFreeAmount; brackets = [ { limit: 23500, rate: 0.10, name: "10%" }, { limit: 15000, rate: 0.15, name: "15%" }, { limit: 155000, rate: 0.20, name: "20%" }, { limit: Infinity, rate: 0.225, name: "22.5%" } ]; }
+        else if (year === 2014) { taxFreeAmount = 5000; taxableIncomeForCalc -= taxFreeAmount; brackets = [ { limit: 25000, rate: 0.10, name: "10%" }, { limit: 15000, rate: 0.15, name: "15%" }, { limit: 155000, rate: 0.20, name: "20%" }, { limit: Infinity, rate: 0.225, name: "22.5%" } ]; }
+        else if (year === 2013) { taxFreeAmount = 5000; taxableIncomeForCalc -= taxFreeAmount; brackets = [ { limit: 25000, rate: 0.10, name: "10%" }, { limit: 15000, rate: 0.15, name: "15%" }, { limit: 9955000, rate: 0.20, name: "20%" }, { limit: Infinity, rate: 0.25, name: "25%" } ]; }
+        else { taxFreeAmount = 5000; taxableIncomeForCalc -= taxFreeAmount; brackets = [ { limit: 15000, rate: 0.10, name: "10%" }, { limit: 20000, rate: 0.15, name: "15%" }, { limit: Infinity, rate: 0.20, name: "20%" } ]; }
+
+        // Universal Calculation Engine
+        let remainingForBrackets = highIncomeApplied ? income : taxableIncomeForCalc;
+        if (!highIncomeApplied) {
+            breakdown.push({ amount: Math.min(income, taxFreeAmount), rate: "0%", tax: 0 });
+        }
+        for (const bracket of brackets) {
+            if (remainingForBrackets <= 0) break;
+            const taxableInBracket = Math.min(remainingForBrackets, bracket.limit);
+            const taxForBracket = taxableInBracket * bracket.rate;
+            totalTax += taxForBracket;
+            remainingForBrackets -= taxableInBracket;
+            breakdown.push({ amount: taxableInBracket, rate: bracket.name, tax: taxForBracket });
+        }
+        initialTax = totalTax;
+
+        // Discount logic for 2017-2019
+        if (year >= 2017 && year <= 2019) {
+            let discountBrackets;
+            if(year >= 2018) { discountBrackets = [ { incomeLimit: 30000, discount: 0.85, name: "الثانية" }, { incomeLimit: 45000, discount: 0.45, name: "الثالثة" }, { incomeLimit: 200000, discount: 0.075, name: "الرابعة" }, { incomeLimit: Infinity, discount: 0, name: "لا يوجد" } ]; } 
+            else { discountBrackets = [ { incomeLimit: 30000, discount: 0.80, name: "الثانية" }, { incomeLimit: 45000, discount: 0.40, name: "الثالثة" }, { incomeLimit: 200000, discount: 0.05, name: "الرابعة" }, { incomeLimit: Infinity, discount: 0, name: "لا يوجد" } ]; }
+            let bracketName = "لا يوجد", discountRate = 0;
+            for(const bracket of discountBrackets) { 
+                if(income <= bracket.incomeLimit) { 
+                    discountRate = bracket.discount; 
+                    bracketName = bracket.name; 
+                    break; 
+                } 
+            }
+            const discountValue = totalTax * discountRate;
+            totalTax -= discountValue;
+            discountInfo = { discountRate, discountValue, bracketName, initialTax };
+        }
+        return { totalTax, breakdown, taxableIncome: income, highIncomeApplied, specialNote, discountInfo, initialTax };
+    }
+
+    function calculateCompanyTax(year, income) {
+        let rate = 0;
+        if (year >= 2015) rate = 0.225; else if (year >= 2012) rate = 0.25; else rate = 0.20;
+        return { totalTax: income * rate, rate: `${(rate * 100).toFixed(1).replace('.0','')}%` };
+    }
+
+    // Main Calculation and UI Update Function
+    function calculateTax() {
+        const year = parseInt(document.getElementById('year').value);
+        const entityType = document.getElementById('entityType').value;
+        const income = parseFloat(document.getElementById('income').value);
+        if (isNaN(income) || income < 0 || document.getElementById('income').value === '') {
+            showToast("يرجى إدخال مبلغ صحيح للدخل", 'error');
+            return;
+        }
+        let resultHtml = '';
+        if (entityType === 'individual') {
+            const { totalTax, breakdown, taxableIncome, highIncomeApplied, specialNote, discountInfo } = calculateIndividualTax(year, income);
+            let specialNotesHtml = '';
+            if(highIncomeApplied) {
+                specialNotesHtml += `<div class="result-item info"><span><strong>ملاحظة :</strong> ${specialNote}</span></div>`;
+            }
+            if(discountInfo && discountInfo.discountRate > 0) {
+                specialNotesHtml += `
+                                <div class="result-item"><span>الضريبة قبل الخصم</span> <strong>${formatCurrency(discountInfo.initialTax)}</strong></div>
+                                <div class="result-item discount">
+                                    <span>شريحة الخصم ( ${discountInfo.bracketName} )</span> <strong>${(discountInfo.discountRate * 100).toFixed(1).replace('.0','')}%</strong>
+                                </div>
+                                <div class="result-item"><span>قيمة الخصم</span> <span>- ${formatCurrency(discountInfo.discountValue)}</span></div>
+                `;
+            }
+
+            const ordinals = ["الأولى", "الثانية", "الثالثة", "الرابعة", "الخامسة", "السادسة", "السابعة", "الثامنة"];
+            const breakdownHtml = breakdown.map((item, index) => {
+                const bracketName = ordinals[index] || `رقم ${index + 1}`; // Fallback for more than 8 brackets
+                return `
+                <div class="result-item">
+                    <span>الشريحة ${bracketName} | بمبلغ ${formatCurrency(item.amount)} بسعر ${item.rate}</span> <span>${formatCurrency(item.tax)}</span>
+                </div>`;
+            }).join('');
+
+            resultHtml = `
+                <div class="result-header">تفاصيل حساب الضريبة (شخص طبيعي)</div>
+                <div class="result-body">
+                    <div class="result-item"><span>الوعاء الضريبي</span> <strong>${formatCurrency(taxableIncome)}</strong></div>
+                    <hr style="margin: 15px 0; border-top: 1px solid var(--result-border-light); border-bottom: none;">
+                    ${breakdownHtml}
+                    ${specialNotesHtml ? `<hr style="margin: 15px 0; border-top: 1px solid var(--result-border-light); border-bottom: none;">${specialNotesHtml}` : ''}
+                </div>
+                <div class="final-tax">
+                    <span>إجمالي الضريبة المستحقة</span> <strong>${formatCurrency(totalTax)}</strong>
+                </div>
+            `;
+        } else { // Company
+            const { totalTax, rate } = calculateCompanyTax(year, income);
+            resultHtml = `
+                <div class="result-header">تفاصيل حساب الضريبة (شخص اعتباري)</div>
+                    <div class="result-body">
+                        <div class="result-item"><span>صافي الربح السنوي</span> <span>${formatCurrency(income)}</span></div>
+                        <div class="result-item"><span>السعر الضريبي المطبق</span> <strong>${rate}</strong></div>
+                </div>
+                <div class="final-tax">
+                    <span>إجمالي الضريبة المستحقة</span> <strong>${formatCurrency(totalTax)}</strong>
+                </div>
+            `;
+        }
+        resultContainer.innerHTML = resultHtml;
+        resultContainer.classList.add('show');
+        showToast("تم الحساب بنجاح!", 'success');
+        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+
+    function resetForm() {
+        document.getElementById('income').value = '';
+        resultContainer.innerHTML = '';
+        resultContainer.classList.remove('show');
+        document.getElementById('year').value = new Date().getFullYear();
+        document.getElementById('entityType').value = 'individual';
+        showToast("تم مسح الحقول.", 'info');
+    }
+});
+</script>
+
+</body>
+</html>
