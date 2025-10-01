@@ -342,13 +342,6 @@
         .toast.error   { background-color: var(--danger-color); }
         .toast.info    { background-color: var(--secondary-color); }
         
-        @media (max-width: 600px) {
-            .form-grid, .button-group { grid-template-columns: 1fr; }
-            .card-body { padding: 20px; }
-            .card-header h1 { font-size: 1.5em; }
-            .theme-switcher-container { top: 15px; left: 15px; }
-        }
-
         .navbar { position: fixed; bottom: 3px; left: 50%; transform: translateX(-50%); width: 87.5%; background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); display: flex; justify-content: space-around; padding: 5px 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); border-radius: 22.5px; border-bottom: 3px solid white; z-index: 1000; }
         .navbar .nav-item { flex: 1; text-align: center; color: white; font-size: 14px; cursor: pointer; padding: 5px 0; transition: var(--transition); border: 1px solid transparent; }
         .icon { margin-bottom: 2px; font-size: 20px; }
@@ -485,6 +478,40 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
+
+        /* ============== تعديلات التجاوب مع الهاتف ============== */
+        @media (max-width: 600px) {
+            .form-grid, .button-group { grid-template-columns: 1fr; }
+            .card-body { padding: 20px; }
+            .card-header h1 { font-size: 1.5em; }
+            .theme-switcher-container { top: 15px; left: 15px; }
+
+            /* تعديل حجم الجداول */
+            .results-table th, .results-table td {
+                padding: 8px 4px;
+                font-size: 0.85em; 
+            }
+            .result-body h4 {
+                font-size: 1.1em; 
+            }
+
+            /* تعديل حجم النافذة المنبثقة */
+            .modal-content {
+                width: 95%; 
+                padding: 20px 15px; 
+            }
+            .modal-header-info h3 {
+                font-size: 1.3em;
+            }
+            .modal-content p {
+                font-size: 1em;
+            }
+            .modal-button {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+        }
+        /* ======================================================= */
     </style>
 </head>
 <body>
@@ -573,7 +600,7 @@
                 <i class="fas fa-info-circle"></i>
                 <h3>حول الصفحة</h3>
             </div>
-            <p>تم برمجة هذه الصفحة من قبل <a href="https://wa.me/201030069322?text=السلام%20عليكم%20ورحمة%20الله%20وبركاته%20 .. أقدر%20أساعد%20حضرتك%20إزاي%20%D8%9F" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); font-weight: bold; text-decoration: none;">د/ محمود رزق سعد</a> مبرمج ومطور تطبيق Tax Law App المنشور رسمياً علي متجر تطبيقات جوجل بلاي، أنصحك بتحميل التطبيق علي الأندرويد للإستفادة من جميع مزاياه.</p>
+            <p>تم برمجة هذه الصفحة من قبل <a href="https://wa.me/201030069322?text=السلام%20عليكم%20ورحمة%20الله%20وبركاته% .. 20أقدر%20أساعد%20حضرتك%20إزاي%20%D8%9F" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); font-weight: bold; text-decoration: none;">د/ محمود رزق سعد</a> مبرمج ومطور تطبيق Tax Law App المنشور رسمياً علي متجر تطبيقات جوجل بلاي، أنصحك بتحميل التطبيق علي الأندرويد للإستفادة من جميع مزاياه.</p>
             <a href="https://play.google.com/store/apps/details?id=com.mrizk.taxlawapp" target="_blank" rel="noopener noreferrer" class="modal-button">
                 <i class="fas fa-download"></i> تحميل التطبيق
             </a>
@@ -972,4 +999,5 @@ document.dir = 'rtl';
 
 </body>
 </html>
+
 
